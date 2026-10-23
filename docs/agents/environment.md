@@ -36,6 +36,12 @@ install-answered: 2026-10-24
 dependency-tools: yes
 dependency-answered: 2026-10-24
 
+## Unattended mode
+
+unattended-mode: no
+unattended-reason: the user said no to work running alone here
+unattended-answered: 2026-10-24
+
 ## Installed outside the project
 
 - `brew install gitleaks 2>& 1` installed into /opt/homebrew/bin
