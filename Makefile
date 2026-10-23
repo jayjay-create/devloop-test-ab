@@ -1,16 +1,41 @@
-.PHONY: check test-one fmt-write services-up
+.PHONY: check fmt fmt-file fmt-write lint lint-file types test-unit test-file test-one scan-secrets services-up
 
-check:
-	@echo "The check suite is not configured: no check class is filled yet." >&2
-	@exit 1
+check: fmt lint types test-unit scan-secrets
 
-test-one:
-	@echo "The unit class is not configured: no command for running one test yet." >&2
-	@exit 1
+fmt:
+	npx prettier --check src test
+
+fmt-file:
+	@test -n "$(FILE)" || { echo "fmt-file needs FILE=<path>" >&2; exit 2; }
+	npx prettier --check "$(FILE)"
 
 fmt-write:
-	@echo "The format class is not configured: no formatter to run yet." >&2
-	@exit 1
+	npx prettier --write src test
+
+lint:
+	npx eslint src test
+
+lint-file:
+	@test -n "$(FILE)" || { echo "lint-file needs FILE=<path>" >&2; exit 2; }
+	npx eslint "$(FILE)"
+
+types:
+	npx tsc --noEmit
+
+test-unit:
+	npm test
+
+test-file:
+	@test -n "$(FILE)" || { echo "test-file needs FILE=<path>" >&2; exit 2; }
+	node --test "$(FILE)"
+
+test-one:
+	@test -n "$(NAME)" || { echo "test-one needs NAME=<test name>" >&2; exit 2; }
+	node --test --test-name-pattern="$(NAME)" 'test/*.test.ts'
+
+scan-secrets:
+	gitleaks dir . --no-banner --redact
+	gitleaks git . --no-banner --redact
 
 services-up:
 	@echo "Nothing has to run: this project has no services."
