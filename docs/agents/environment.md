@@ -30,3 +30,12 @@ install-place: ~/.cache/Cypress
 install-place: ~/.cache/puppeteer
 install-route: npm
 install-answered: 2026-10-24
+
+## Dependency permission
+
+dependency-tools: yes
+dependency-answered: 2026-10-24
+
+## Installed outside the project
+
+- `brew install gitleaks 2>& 1` installed into /opt/homebrew/bin
